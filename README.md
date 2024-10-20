@@ -22,7 +22,7 @@ In the `Folder` property you will need to provide a full path to where you want 
 
 ## Note
 
-Translation increase the processing time, sometimes 2x the time! So avoid translation for long videos or audios.
+Translation increases the processing time, sometimes 2x the time! So avoid translation for long videos or audios.
 
 ## Features
 
@@ -36,7 +36,7 @@ Translation increase the processing time, sometimes 2x the time! So avoid transl
 ### Notes
 
 - You can use any language codes supported by OpenAI Whisper
-- If you're unsure or don't know ahead of time which language code you need you can omit lang property.
+- If you're unsure or don't know ahead of time which language code you need, you can omit lang property.
 - Supported Models are: Tiny, Base, Medium and Large.
 
 ## Usage
@@ -138,7 +138,7 @@ Hello
 World
 ```
 
-On failure (e.g: invalid file format) the response JSON will be:
+On failure (e.g.: invalid file format) the response JSON will be:
 
 ```json
 {
