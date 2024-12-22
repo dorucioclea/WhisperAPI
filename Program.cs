@@ -80,11 +80,11 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     .WriteTo.Console());
 
 // Configure HTTPS redirection
-builder.Services.AddHttpsRedirection(options =>
-{
-    options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
-    options.HttpsPort = 443;
-});
+// builder.Services.AddHttpsRedirection(options =>
+// {
+//     options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
+//     options.HttpsPort = 443;
+// });
 
 // Build the application
 var app = builder.Build();

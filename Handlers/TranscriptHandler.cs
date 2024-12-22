@@ -61,7 +61,8 @@ public sealed class TranscriptHandler(Globals globals) : IRequestHandler<Whisper
     /// <exception cref="FileProcessingException">Thrown when unable to create a WhisperFactory.</exception>
     private async Task<WhisperFactory> GetWhisperFactory(GgmlType modelType, CancellationToken token)
     {
-        var modelPath = Path.Combine(globals.WhisperFolder, $"{modelType}.bin");
+        string modelName = GetModelName(modelType);
+        var modelPath = Path.Combine(globals.WhisperFolder, $"{modelName}.bin");
         var modelExists = File.Exists(modelPath);
         if (!modelExists)
         {
@@ -156,5 +157,36 @@ public sealed class TranscriptHandler(Globals globals) : IRequestHandler<Whisper
         }
 
         return segments;
+    }
+    
+    private static string GetModelName(GgmlType type)
+    {
+        switch (type)
+        {
+            case GgmlType.Tiny:
+                return "ggml-tiny";
+            case GgmlType.TinyEn:
+                return "ggml-tiny.en";
+            case GgmlType.Base:
+                return "ggml-base";
+            case GgmlType.BaseEn:
+                return "ggml-base.en";
+            case GgmlType.Small:
+                return "ggml-small";
+            case GgmlType.SmallEn:
+                return "ggml-small.en";
+            case GgmlType.Medium:
+                return "ggml-medium";
+            case GgmlType.MediumEn:
+                return "ggml-medium.en";
+            case GgmlType.LargeV1:
+                return "ggml-large-v1";
+            case GgmlType.LargeV2:
+                return "ggml-large-v2";
+            case GgmlType.LargeV3:
+                return "ggml-large-v3";
+            default:
+                throw new ArgumentOutOfRangeException(nameof (type), (object) type, (string) null);
+        }
     }
 }
