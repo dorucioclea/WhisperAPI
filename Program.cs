@@ -1,14 +1,13 @@
-using System.Net;
-using System.Net.Mime;
-using System.Text;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Options;
 using Serilog;
-using WhisperAPI;
 using WhisperAPI.Exceptions;
+using WhisperAPI.Extensions;
+using WhisperAPI.Models;
+using WhisperAPI.Utils;
 
 // Define an HTML string to be used as the default response for the root endpoint
 const string html = """
@@ -67,7 +66,7 @@ builder.Services.Configure<TokenBucketRateLimiterOptions>(options =>
 builder.Services.AddSingleton<ReplenishingRateLimiter>(sp => sp.GetRequiredService<TokenBucketRateLimiter>());
 
 // Add services to the builder
-builder.Services.AddSingleton<Globals>();
+builder.Services.AddSingleton<DirectoryInitializer>();
 builder.Services.AddTransient<FileExtensionContentTypeProvider>();
 builder.Services.Configure<WhisperSettings>(builder.Configuration.GetSection("WhisperSettings"));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
@@ -93,28 +92,11 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-app.UseMiddleware<Middleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseRateLimiter();
 app.MapGet("/", () => Results.Extensions.Html(html));
 app.Run();
 
 // Define extension methods for IResult
-internal static class ResultsExtensions
-{
-    public static IResult Html(this IResultExtensions resultExtensions, string html)
-    {
-        ArgumentNullException.ThrowIfNull(resultExtensions);
-        return new HtmlResult(html);
-    }
-}
 
 // Define a custom IResult implementation for returning HTML responses
-internal class HtmlResult(string html) : IResult
-{
-    public Task ExecuteAsync(HttpContext httpContext)
-    {
-        httpContext.Response.ContentType = MediaTypeNames.Text.Html;
-        httpContext.Response.ContentLength = Encoding.UTF8.GetByteCount(html);
-        return httpContext.Response.WriteAsync(html);
-    }
-}

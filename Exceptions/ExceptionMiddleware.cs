@@ -5,7 +5,7 @@ using System.Threading.RateLimiting;
 
 namespace WhisperAPI.Exceptions;
 
-public class Middleware(RequestDelegate next, ReplenishingRateLimiter rateLimiter)
+public class ExceptionMiddleware(RequestDelegate next, ReplenishingRateLimiter rateLimiter)
 {
     public async Task InvokeAsync(HttpContext context)
     {

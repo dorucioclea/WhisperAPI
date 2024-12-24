@@ -1,4 +1,4 @@
-namespace WhisperAPI;
+namespace WhisperAPI.Models;
 
 public class WhisperSettings
 {

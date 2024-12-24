@@ -1,4 +1,4 @@
-namespace WhisperAPI;
+namespace WhisperAPI.Models;
 
 /// <summary>
 /// Represents the options for rate limiting.

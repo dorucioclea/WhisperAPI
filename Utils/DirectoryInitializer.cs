@@ -1,17 +1,18 @@
 using Microsoft.Extensions.Options;
 using Serilog;
+using WhisperAPI.Models;
 using ILogger = Serilog.ILogger;
 
-namespace WhisperAPI;
+namespace WhisperAPI.Utils;
 
-public class Globals
+public class DirectoryInitializer
 {
     public readonly string WhisperFolder;
     public readonly string AudioFilesFolder;
 
-    private readonly ILogger _logger = Log.ForContext<Globals>();
+    private readonly ILogger _logger = Log.ForContext<DirectoryInitializer>();
 
-    public Globals(IOptions<WhisperSettings> options)
+    public DirectoryInitializer(IOptions<WhisperSettings> options)
     {
         if (string.IsNullOrEmpty(options.Value.Folder))
             throw new DirectoryNotFoundException("Whisper folder not found. Please set the Whisper folder in appsettings.json");

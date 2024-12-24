@@ -4,11 +4,12 @@ using Whisper.net;
 using Whisper.net.Ggml;
 using WhisperAPI.Exceptions;
 using WhisperAPI.Models;
+using WhisperAPI.Utils;
 
 namespace WhisperAPI.Handlers;
 
 [UsedImplicitly]
-public sealed class TranscriptHandler(Globals globals) : IRequestHandler<WhisperOptions, List<SegmentData>>
+public sealed class TranscriptHandler(DirectoryInitializer directoryInitializer) : IRequestHandler<WhisperOptions, List<SegmentData>>
 {
     private const string ErrorProcessing = "Couldn't process the file";
     private const string MissingFile = "File not found";
@@ -62,7 +63,7 @@ public sealed class TranscriptHandler(Globals globals) : IRequestHandler<Whisper
     private async Task<WhisperFactory> GetWhisperFactory(GgmlType modelType, CancellationToken token)
     {
         string modelName = GetModelName(modelType);
-        var modelPath = Path.Combine(globals.WhisperFolder, $"{modelName}.bin");
+        var modelPath = Path.Combine(directoryInitializer.WhisperFolder, $"{modelName}.bin");
         var modelExists = File.Exists(modelPath);
         if (!modelExists)
         {
