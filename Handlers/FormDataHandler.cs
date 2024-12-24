@@ -11,6 +11,7 @@ namespace WhisperAPI.Handlers;
 [UsedImplicitly]
 public sealed class FormDataHandler : IRequestHandler<FormDataQuery, WhisperOptions>
 {
+    private const string Auto = "auto";
     private const string InvalidLanguageError = "Invalid language";
     private const string InvalidModelError = "Invalid model";
 
@@ -33,22 +34,16 @@ public sealed class FormDataHandler : IRequestHandler<FormDataQuery, WhisperOpti
     {
         if (string.IsNullOrEmpty(lang))
         {
-            lang = "auto";
+            lang = Auto;
             return lang;
         }
 
         lang = lang.Trim().ToLower();
-        var isAuto = lang is "auto";
-        if (isAuto)
-            return lang;
 
-        /*
-         * - `EnglishName`: The culture's name in English.
-         * - `DisplayName`: The culture's name in the current UI culture.
-         * - `NativeName`: The culture's name in its own language.
-         * - `TwoLetterISOLanguageName`: The culture's two-letter ISO 639-1 language name.
-         * - `ThreeLetterISOLanguageName`: The culture's three-letter ISO 639-2 language name.
-         */
+        if (lang is Auto)
+        {
+            return lang;
+        }
 
         var iso = CultureInfo.GetCultures(CultureTypes.AllCultures)
             .FirstOrDefault(culture => culture.EnglishName.ToLower() == lang ||
@@ -59,7 +54,9 @@ public sealed class FormDataHandler : IRequestHandler<FormDataQuery, WhisperOpti
             ?.TwoLetterISOLanguageName;
 
         if (iso is not null)
+        {
             return iso;
+        }
 
         throw new InvalidLanguageException(InvalidLanguageError);
     }
@@ -73,13 +70,22 @@ public sealed class FormDataHandler : IRequestHandler<FormDataQuery, WhisperOpti
     private static GgmlType ValidateModel(string model)
     {
         if (model.Contains("large"))
+        {
             model = model.Replace("large", "largev3");
+        }
+
         var parse = Enum.TryParse(model, true, out GgmlType type);
 
+        // v1 model exists, but we don't want to use it
         if (type.ToString().ToLower().Contains("v1"))
-            return GgmlType.LargeV3; // v1 model exists but we don't want to use it
+        {
+            return GgmlType.LargeV3;
+        }
+
         if (parse)
+        {
             return type;
+        }
 
         throw new InvalidModelException(InvalidModelError);
     }

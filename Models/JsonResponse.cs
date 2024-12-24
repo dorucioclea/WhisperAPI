@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace WhisperAPI.Models;
@@ -5,6 +6,7 @@ namespace WhisperAPI.Models;
 /// <summary>
 /// Represents a JSON response.
 /// </summary>
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
 public sealed class JsonResponse
 {
     /// <summary>

@@ -13,17 +13,23 @@ public sealed class ResponseData(double start, double end, string text)
     /// <summary>
     /// Start time of the sentence.
     /// </summary>
-    [UsedImplicitly] public double Start { get; init; } = start;
+    [UsedImplicitly] 
+    public double Start { get; init; } = start;
 
     /// <summary>
     /// End time of the sentence.
     /// </summary>
-    [UsedImplicitly] public double End { get; init; } = end;
+    [UsedImplicitly] 
+    public double End { get; init; } = end;
 
     /// <summary>
     /// The literal text of the sentence.
     /// </summary>
-    [UsedImplicitly] public string Text { get; init; } = text;
+    [UsedImplicitly] 
+    public string Text { get; init; } = text;
 
-    public ResponseData() : this(0, 0, string.Empty) { }
+    public ResponseData() : this(0, 0, string.Empty)
+    {
+        
+    }
 }

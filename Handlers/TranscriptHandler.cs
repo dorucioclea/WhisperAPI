@@ -62,7 +62,7 @@ public sealed class TranscriptHandler(DirectoryInitializer directoryInitializer)
     /// <exception cref="FileProcessingException">Thrown when unable to create a WhisperFactory.</exception>
     private async Task<WhisperFactory> GetWhisperFactory(GgmlType modelType, CancellationToken token)
     {
-        string modelName = GetModelName(modelType);
+        var modelName = GetModelName(modelType);
         var modelPath = Path.Combine(directoryInitializer.WhisperFolder, $"{modelName}.bin");
         var modelExists = File.Exists(modelPath);
         if (!modelExists)

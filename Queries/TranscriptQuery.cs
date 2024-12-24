@@ -7,7 +7,7 @@ namespace WhisperAPI.Queries;
 /// <summary>
 /// Represents a query for retrieving a transcript with optional translation and language settings.
 /// </summary>
-/// <param name="Translate">Whether or not to translate the transcript.</param>
+/// <param name="Translate">Whether to translate the transcript.</param>
 /// <param name="Model">The model to use for the transcript.</param>
 /// <returns>A <see cref="WhisperAPI.Models.JsonResponse"/> containing the requested transcript.</returns>
 public record TranscriptQuery(
