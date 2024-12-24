@@ -186,7 +186,7 @@ public sealed class TranscriptHandler(Globals globals) : IRequestHandler<Whisper
             case GgmlType.LargeV3:
                 return "ggml-large-v3";
             default:
-                throw new ArgumentOutOfRangeException(nameof (type), (object) type, (string) null);
+                throw new ArgumentOutOfRangeException(nameof (type), type, null);
         }
     }
 }
